@@ -5,7 +5,13 @@ import CustomButton from './components/Button';
 import moment from 'moment';
 import TrackedTime from './TrackedTime';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Dialog, {DialogTitle, DialogContent, DialogFooter, DialogButton, ScaleAnimation} from 'react-native-popup-dialog';
+import Dialog, {
+    DialogTitle,
+    DialogContent,
+    DialogFooter,
+    DialogButton,
+    ScaleAnimation
+} from 'react-native-popup-dialog';
 
 function TimeTracker() {
     const [trackedTimes, setTrackedTimes] = useState([]);
@@ -97,41 +103,43 @@ function TimeTracker() {
                     placeholder="Write your title here..."
                     onChangeText={newText => setTitle(newText)}
                 />
-                <Text style={styles.time}>{currentTime.format('HH:mm:ss')}</Text>
-                <View style={styles.topbarButtonsContainer}>
-                    {!isTracking ?
-                        <CustomButton
-                            title="Start"
-                            onPress={() => {
-                                const current = moment()
-                                setStartTime(current)
-                                setIsTracking(true)
-                                setIntervalId(setInterval(() => {
-                                    setCurrentTime(moment.utc(moment().diff(current)))
-                                }, 100))
-                            }}
-                            backgroundColor="#0f0"
-                        />
-                        :
-                        <CustomButton
-                            title="Stop"
-                            onPress={() => {
-                                storeData({
-                                    'id': Math.random()+'',
-                                    'start': startTime,
-                                    'stop': moment(),
-                                    'title': title,
-                                    'tags': []
-                                })
-                                setStartTime(moment(0))
-                                setCurrentTime(moment.utc(0))
-                                setIsTracking(false)
-                                clearInterval(intervalId)
-                                setIntervalId(null)
-                            }}
-                            backgroundColor="#f00"
-                        />
-                    }
+                <View style={styles.timeContainer}>
+                    <Text style={styles.time}>{currentTime.format('HH:mm:ss')}</Text>
+                    <View style={styles.topbarButtonsContainer}>
+                        {!isTracking ?
+                            <CustomButton
+                                title="Start"
+                                onPress={() => {
+                                    const current = moment()
+                                    setStartTime(current)
+                                    setIsTracking(true)
+                                    setIntervalId(setInterval(() => {
+                                        setCurrentTime(moment.utc(moment().diff(current)))
+                                    }, 100))
+                                }}
+                                backgroundColor="#0f0"
+                            />
+                            :
+                            <CustomButton
+                                title="Stop"
+                                onPress={() => {
+                                    storeData({
+                                        'id': Math.random() + '',
+                                        'start': startTime,
+                                        'stop': moment(),
+                                        'title': title,
+                                        'tags': []
+                                    })
+                                    setStartTime(moment(0))
+                                    setCurrentTime(moment.utc(0))
+                                    setIsTracking(false)
+                                    clearInterval(intervalId)
+                                    setIntervalId(null)
+                                }}
+                                backgroundColor="#f00"
+                            />
+                        }
+                    </View>
                 </View>
             </View>
 
@@ -157,11 +165,15 @@ function TimeTracker() {
                 <DialogFooter>
                     <DialogButton
                         text="Close"
-                        onPress={() => {setTagPopup(null)}}
+                        onPress={() => {
+                            setTagPopup(null)
+                        }}
                     />
                     <DialogButton
                         text="Add"
-                        onPress={() => {addTag(tagPopup, tagText)}}
+                        onPress={() => {
+                            addTag(tagPopup, tagText)
+                        }}
                     />
                 </DialogFooter>
             </Dialog>
@@ -171,14 +183,15 @@ function TimeTracker() {
 
 const styles = StyleSheet.create({
     topbarContainer: {
-        width: '100%'
+        width: '100%',
+        maxWidth: '100%'
     },
     topbar: {
         width: '100%',
-        flexDirection: "row",
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 20,
+        padding: 15,
         marginBottom: 20,
         backgroundColor: 'rgba(255, 255, 255, 1)',
 
@@ -192,21 +205,27 @@ const styles = StyleSheet.create({
 
         elevation: 15,
     },
+
+    timeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
     topbarButtonsContainer: {
         flexDirection: 'row',
         marginHorizontal: 20,
     },
 
-    time: {
-        fontSize: 20,
-        marginHorizontal: 20
+    input: {
+        fontSize: 15,
+        height: '100%',
+        // width: '100%',
+        padding: 10,
     },
 
-    input: {
-        fontSize: 20,
-        height: '100%',
-        width: '100%',
-        padding: 10,
+    time: {
+        fontSize: 15,
+        marginHorizontal: 20
     },
 
     dialogInput: {
@@ -214,7 +233,7 @@ const styles = StyleSheet.create({
     },
 
     dialogContent: {
-        padding: 20,
+        padding: 15,
     },
 })
 

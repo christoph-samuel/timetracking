@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 
 export default function Button(props) {
-    const { onPress, title = 'Button', backgroundColor, paddingH = '30',paddingV = '15', weight = '900' } = props;
+    const { onPress, title = 'Button', backgroundColor, paddingH = '20',paddingV = '10', weight = '900' } = props;
     let buttonSytle = StyleSheet.compose(styles.button, {
         backgroundColor: backgroundColor,
         paddingHorizontal: parseInt(paddingH),
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     text: {
-        fontSize: 16,
+        fontSize: 12,
         color: 'white',
         textAlign: 'center',
         textAlignVertical: 'center',

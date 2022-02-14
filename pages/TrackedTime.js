@@ -13,14 +13,14 @@ function TrackedTime({id, title, start, stop, deleteData, addTag, editTitle, tag
                        onSubmitEditing={(event) => editTitle(event, id, newTitle)}
                        style={[styles.title, styles.margin]}/>
 
+            <Text
+                style={[styles.time, styles.margin]}>{moment.isMoment(start) && start.format("DD.MM.YYYY, HH:mm") || ':/'} - {moment.isMoment(stop) && stop.format("HH:mm") || ':('}</Text>
+            <Text style={[styles.diff, styles.margin]}>{moment.utc(stop.diff(start)).format("HH:mm:ss") || ':O'}</Text>
+
             <Text style={[styles.tags, styles.margin]}>{tags.join(', ')}</Text>
 
             <CustomButton title="+" onPress={(event) => addTag(event, id)} backgroundColor="#000" paddingH='10'
                           paddingV='10'/>
-
-            <Text
-                style={[styles.time, styles.margin]}>{moment.isMoment(start) && start.format("DD.MM.YYYY, HH:mm") || ':/'} - {moment.isMoment(stop) && stop.format("HH:mm") || ':('}</Text>
-            <Text style={[styles.diff, styles.margin]}>{moment.utc(stop.diff(start)).format("HH:mm:ss") || ':O'}</Text>
 
             <CustomButton title="Delete" onPress={(event) => deleteData(event, id)} backgroundColor="#f00" paddingH='8'
                           paddingV='8' weight='500' style={styles.margin}/>
@@ -31,14 +31,15 @@ function TrackedTime({id, title, start, stop, deleteData, addTag, editTitle, tag
 const styles = StyleSheet.create({
     table: {
         flexDirection: 'row',
-        justifyContent: "space-between",
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         marginVertical: 10,
         marginHorizontal: 25,
-        padding: 15,
+        padding: 10,
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         borderRadius: 10,
-        fontSize: 30,
+        fontSize: 15,
+        maxWidth: '100%',
 
         shadowColor: "#000",
         shadowOffset: {
@@ -49,12 +50,15 @@ const styles = StyleSheet.create({
         shadowRadius: 9.51,
 
         elevation: 15,
+
+        flexWrap: 'wrap'
     },
 
     title: {
+        maxWidth: '100%',
         minWidth: '30%',
-        padding: 20,
-        fontSize: 15,
+        padding: 15,
+        fontSize: 12,
     },
 
     tags: {
@@ -62,11 +66,12 @@ const styles = StyleSheet.create({
     },
 
     time: {
-        fontSize: 15,
+        fontSize: 12,
+        flexWrap: 'wrap'
     },
 
     diff: {
-        fontSize: 15,
+        fontSize: 12,
     },
 
     margin: {
