@@ -1,39 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import moment from 'moment';
 import {StyleSheet, Text, TextInput, View} from "react-native";
 import CustomButton from './components/Button';
-// import MaterialChip from "react-native-material-chip";
 
 
-function TrackedTime({id, title, start, stop, onDelete, tags}) {
+function TrackedTime({id, title, start, stop, deleteData, addTag, editTitle, tags}) {
+    const [newTitle, setTitle] = useState(title);
+
     return (
         <View style={styles.table}>
-            <TextInput defaultValue={title} style={styles.title}/>
-            <Text>{moment.isMoment(start) && start.format("DD.MM.YYYY, HH:mm") || ':/'}</Text>
-            <Text>–</Text>
-            <Text>{moment.isMoment(stop) && stop.format("DD.MM.YYYY, HH:mm") || ':('}</Text>
-            <Text>{moment.utc(stop.diff(start)).format("HH:mm:ss") || ':O'}</Text>
+            <TextInput defaultValue={title} onChangeText={setTitle}
+                       onSubmitEditing={(event) => editTitle(event, id, newTitle)}
+                       style={[styles.title, styles.margin]}/>
 
-            {/*<MaterialChip*/}
-            {/*    text={chip}*/}
-            {/*    onDelete={(event) => console.log(event, id)}*/}
-            {/*    textStyle={{color: 'rgba(0, 0, 0, 0.87)'}}*/}
-            {/*    rightIcon={*/}
-            {/*        <View*/}
-            {/*            style={{*/}
-            {/*                height: MaterialChip.CHIP_RIGHT_ICON_SIZE,*/}
-            {/*                width: MaterialChip.CHIP_RIGHT_ICON_SIZE,*/}
-            {/*                borderRadius: MaterialChip.CHIP_RIGHT_ICON_RADIUS,*/}
-            {/*                backgroundColor: 'rgba(252,0,0,1)',*/}
-            {/*                borderWidth: 0*/}
-            {/*            }}*/}
-            {/*        />*/}
-            {/*    }*/}
-            {/*/>*/}
+            <Text style={[styles.tags, styles.margin]}>{tags.join(', ')}</Text>
 
-            <CustomButton title="Delete" onPress={(event) => onDelete(event, id)} backgroundColor="#f00" paddingH='8'
-                          paddingV='8' weight='500'/>
+            <CustomButton title="+" onPress={(event) => addTag(event, id)} backgroundColor="#000" paddingH='10'
+                          paddingV='10'/>
 
+            <Text
+                style={[styles.time, styles.margin]}>{moment.isMoment(start) && start.format("DD.MM.YYYY, HH:mm") || ':/'} - {moment.isMoment(stop) && stop.format("HH:mm") || ':('}</Text>
+            <Text style={[styles.diff, styles.margin]}>{moment.utc(stop.diff(start)).format("HH:mm:ss") || ':O'}</Text>
+
+            <CustomButton title="Delete" onPress={(event) => deleteData(event, id)} backgroundColor="#f00" paddingH='8'
+                          paddingV='8' weight='500' style={styles.margin}/>
         </View>
     );
 }
@@ -48,6 +38,7 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         borderRadius: 10,
+        fontSize: 30,
 
         shadowColor: "#000",
         shadowOffset: {
@@ -61,8 +52,25 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        minWidth: '40%',
-        // outlineStyle: 'none'
+        minWidth: '30%',
+        padding: 20,
+        fontSize: 15,
+    },
+
+    tags: {
+        maxWidth: '15%'
+    },
+
+    time: {
+        fontSize: 15,
+    },
+
+    diff: {
+        fontSize: 15,
+    },
+
+    margin: {
+        marginHorizontal: 5,
     }
 })
 
